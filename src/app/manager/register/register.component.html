@@ -1,0 +1,71 @@
+<div class="container">
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-6 text-center" style="padding-top: 4%; padding-bottom: 4%;">
+      <div class="card" style="padding-top: 5%; padding-left: 5%; padding-right: 5%;">
+        <form [formGroup]="managerForm" (ngSubmit)="onRegister()">
+          <h3>Manager Register</h3>
+          <br>
+          <input [class.is-invalid]="managerForm.get('firstName').invalid &&
+          managerForm.get('firstName').touched" formControlName="firstName" class="form-control" type="text"
+            placeholder="first name">
+          <small class="text-danger" [class.d-none]="managerForm.get('firstName').valid ||
+            managerForm.get('firstName').untouched">* first name is required
+          </small>
+          <br>
+
+          <input [class.is-invalid]="managerForm.get('lastName').invalid &&
+          managerForm.get('lastName').touched" formControlName="lastName" class="form-control" type="text"
+            placeholder="last name">
+          <small class="text-danger" [class.d-none]="managerForm.get('lastName').valid ||
+            managerForm.get('lastName').untouched">* last name is required
+          </small>
+          <br>
+          <input [class.is-invalid]="managerForm.get('email').invalid &&
+          managerForm.get('email').touched" formControlName="email" class="form-control" type="email"
+            placeholder="email">
+          <small class="text-danger" [class.d-none]="managerForm.get('email').valid ||
+            managerForm.get('email').untouched">* email required
+          </small>
+          <br>
+          <input [class.is-invalid]="managerForm.get('password').invalid &&
+          managerForm.get('password').touched" formControlName="password" class="form-control" type="password"
+            placeholder="password">
+          <small class="text-danger" [class.d-none]="managerForm.get('password').valid ||
+            managerForm.get('password').untouched">* password required
+          </small>
+          <br>
+          <input [class.is-invalid]="managerForm.get('address').invalid &&
+          managerForm.get('address').touched" formControlName="address" class="form-control" type="text"
+            placeholder="address">
+          <small class="text-danger" [class.d-none]="managerForm.get('address').valid ||
+            managerForm.get('address').untouched">* address required
+          </small>
+          <br>
+          <input [class.is-invalid]="managerForm.get('dob').invalid &&
+          managerForm.get('dob').touched" formControlName="dob" class="form-control" placeholder="birth date" name="dp"
+            ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
+          <small class="text-danger" [class.d-none]="managerForm.get('dob').valid ||
+            managerForm.get('dob').untouched">* birth date is required
+          </small>
+          <br>
+          <input [class.is-invalid]="managerForm.get('company').invalid &&
+          managerForm.get('company').touched" formControlName="company" class="form-control" type="text"
+            placeholder="company">
+          <small class="text-danger" [class.d-none]="managerForm.get('company').valid ||
+            managerForm.get('company').untouched">* company required
+          </small>
+          <br>
+          <button class="btn btn-primary btn-block">Register</button>
+          <br>
+          <small *ngIf="this.errorFlag" class="text-danger">* error while registration, please fill correct data</small>
+        </form>
+        <div>
+          <a href='/login'>Login</a>
+        </div>
+        <br>
+      </div>
+    </div>
+    <div class="col-3"></div>
+  </div>
+</div>

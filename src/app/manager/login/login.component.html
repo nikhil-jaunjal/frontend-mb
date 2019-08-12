@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+    <div class="col-4"></div>
+    <div class="col-4 text-center" style="padding-top: 10%;">
+      <div class="card" style="padding-top: 15% ; padding-bottom:15%; padding-left: 5%; padding-right: 5%;">
+        <form [formGroup]="managerLogin" (ngSubmit)="onLogin()">
+          <h3>Manager Login</h3>
+          <br>
+          <input [class.is-invalid]="managerLogin.get('email').invalid &&
+        managerLogin.get('email').touched" formControlName="email" class="form-control" type="email"
+            placeholder="email">
+          <small class="text-danger" [class.d-none]="managerLogin.get('email').valid ||
+          managerLogin.get('email').untouched">* email is required
+          </small>
+          <br>
+          <input [class.is-invalid]="managerLogin.get('password').invalid &&
+          managerLogin.get('password').touched" formControlName="password" class="form-control" type="password"
+            placeholder="password">
+          <small class="text-danger" [class.d-none]="managerLogin.get('password').valid ||
+          managerLogin.get('password').untouched">* password is required
+          </small>
+          <br>
+          <button class="btn btn-primary btn-block">Login</button>
+          <br>
+          <small *ngIf="this.errorFlag" class="text-danger">* error while login, please enter correct
+            credentials</small>
+        </form>
+        <div> <a href='/register'>SignUp</a></div>
+      </div>
+    </div>
+    <div class="col-4"></div>
+  </div>
+</div>

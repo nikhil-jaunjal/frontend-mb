@@ -1,0 +1,203 @@
+<div class="container">
+  <div class="text-danger text-center">
+    <small *ngIf="this.initErrorFlag">please login to continue</small>
+    <br>
+    <small *ngIf="this.operationErrorFlag">unable to perform this operation</small>
+  </div>
+  <div class="row" style="padding-top: 5%; padding-bottom: 5%;">
+    <div class="col-2">
+      <button class="btn btn-light btn-block" (click)="logoutManager()">logout</button>
+    </div>
+    <div class="col-8 text-center">
+      <h3>Employees</h3>
+    </div>
+    <div class="col-2">
+      <button class="btn btn-success btn-block" (click)="openAddModel(content)">add</button>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Address</th>
+          <th>Birth Date</th>
+          <th>Mobile</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employeeList">
+          <td>{{employee.employeeId}}</td>
+          <td>{{employee.firstName}}</td>
+          <td>{{employee.lastName}}</td>
+          <td>{{employee.address}}</td>
+          <td>{{employee.dob | date}}</td>
+          <td>{{employee.mobile}}</td>
+          <td>
+            <button type="button" class="btn btn-warning" (click)="openUpdateModel(editcontent, employee)">edit</button>
+          </td>
+          <td scope="row">
+            <button type="button" class="btn btn-danger"
+              (click)="openDeleteConfirmation(deleteContent,employee)">delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- add employee -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Add Employee</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card" style="padding-top: 5%; padding-bottom: 5%; padding-left: 5%; padding-right: 5%;">
+        <form [formGroup]="employeeForm" (ngSubmit)="addEmployee()">
+
+          <input [class.is-invalid]="employeeForm.get('firstName').invalid &&
+          employeeForm.get('firstName').touched" formControlName="firstName" class="form-control" type="text"
+            placeholder="first name">
+          <small class="text-danger" [class.d-none]="employeeForm.get('firstName').valid ||
+          employeeForm.get('firstName').untouched">* first name is required
+          </small>
+          <br>
+
+          <input [class.is-invalid]="employeeForm.get('lastName').invalid &&
+          employeeForm.get('lastName').touched" formControlName="lastName" class="form-control" type="text"
+            placeholder="last name">
+          <small class="text-danger" [class.d-none]="employeeForm.get('lastName').valid ||
+          employeeForm.get('lastName').untouched">* last name is required
+          </small>
+          <br>
+          <input [class.is-invalid]="employeeForm.get('mobile').invalid &&
+          employeeForm.get('mobile').touched" formControlName="mobile" class="form-control" type="text"
+            placeholder="mobile">
+          <small class="text-danger" [class.d-none]="employeeForm.get('mobile').valid ||
+          employeeForm.get('mobile').untouched">* currect mobile number is required
+          </small>
+          <br>
+          <input [class.is-invalid]="employeeForm.get('address').invalid &&
+          employeeForm.get('address').touched" formControlName="address" class="form-control" type="text"
+            placeholder="address">
+          <small class="text-danger" [class.d-none]="employeeForm.get('address').valid ||
+          employeeForm.get('address').untouched">* address required
+          </small>
+          <br>
+          <input [class.is-invalid]="employeeForm.get('dob').invalid &&
+          employeeForm.get('dob').touched" formControlName="dob" class="form-control" placeholder="birth date"
+            name="dp" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
+          <small class="text-danger" [class.d-none]="employeeForm.get('dob').valid ||
+          employeeForm.get('dob').untouched">* birth date is required
+          </small>
+          <br>
+        </form>
+      </div>
+      <div *ngIf="this.addEmployeeErrorFlag" class="text-center">
+        <small class="text-danger">somthing went wrong, please try again with correct input</small>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="addEmployee()">save</button>
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <!-- edit employee -->
+  <ng-template #editcontent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Edit Employee</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card" style="padding-top: 5%; padding-bottom: 5%; padding-left: 5%; padding-right: 5%;">
+        <form [formGroup]="employeeEditForm">
+
+          <input [class.is-invalid]="employeeEditForm.get('firstName').invalid &&
+          employeeEditForm.get('firstName').touched" formControlName="firstName" class="form-control" type="text">
+          <small class="text-danger" [class.d-none]="employeeEditForm.get('firstName').valid ||
+          employeeEditForm.get('firstName').untouched">* first name is required
+          </small>
+          <br>
+          <input [class.is-invalid]="employeeEditForm.get('lastName').invalid &&
+          employeeEditForm.get('lastName').touched" formControlName="lastName" class="form-control" type="text">
+          <small class="text-danger" [class.d-none]="employeeEditForm.get('lastName').valid ||
+          employeeEditForm.get('lastName').untouched">* last name is required
+          </small>
+          <br>
+          <input [class.is-invalid]="employeeEditForm.get('mobile').invalid &&
+          employeeEditForm.get('mobile').touched" formControlName="mobile" class="form-control" type="text">
+          <small class="text-danger" [class.d-none]="employeeEditForm.get('mobile').valid ||
+          employeeEditForm.get('mobile').untouched">* mobile number is required
+          </small>
+          <br>
+          <input [class.is-invalid]="employeeEditForm.get('address').invalid &&
+          employeeEditForm.get('address').touched" formControlName="address" class="form-control" type="text">
+          <small class="text-danger" [class.d-none]="employeeEditForm.get('address').valid ||
+          employeeEditForm.get('address').untouched">* address required
+          </small>
+          <br>
+          <input [class.is-invalid]="employeeEditForm.get('dob').invalid" formControlName="dob" class="form-control"
+            type="text">
+          <small class="text-danger" [class.d-none]="employeeEditForm.get('dob').valid ||
+          employeeEditForm.get('dob').untouched">* birth date is required
+          </small>
+          <br>
+        </form>
+        <div *ngIf="this.updateOperationErrorFlag" class="text-center">
+          <small class="text-danger">somthing went wrong, please try again with correct input</small>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="openUpdateConfirmation(updateContent)">update</button>
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+
+  <!-- update employee confirmation-->
+  <ng-template #updateContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Update Employee</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      are you sure, you want to update this employee record?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="updateEmployee()">Yes</button>
+      <button type="button" class="btn btn-success" (click)="modal.close('Close click')">No</button>
+    </div>
+  </ng-template>
+
+
+  <!-- delete employee confirmation-->
+  <ng-template #deleteContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Delete Employee</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      are you sure, you want to delete this employee record?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="deleteEmployee()">Yes</button>
+      <button type="button" class="btn btn-success" (click)="modal.close('Close click')">No</button>
+    </div>
+  </ng-template>
+
+
+
+</div>
